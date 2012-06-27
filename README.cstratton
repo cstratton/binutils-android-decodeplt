@@ -1,0 +1,7 @@
+This is a patch to the android ndk binutils (based on binutils-2.21) which adds support for
+decoding the entries in the .plt into synthetic symbols names of the form function@plt.
+
+This should be a huge help in making sense of android arm binaries; previously this was only 
+supported for x86 (and for the symbian arm target)
+
+Now that android supports mips, it might be a good idea to make it work for that too.
