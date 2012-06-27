@@ -13898,6 +13898,21 @@ const struct elf_size_info elf32_arm_size_info =
 #define elf_backend_obj_attrs_order	elf32_arm_obj_attrs_order
 #define elf_backend_obj_attrs_handle_unknown elf32_arm_obj_attrs_handle_unknown
 
+/* Changes to enable decoding of function@plt symbols for android */
+#undef  elf_backend_plt_sym_val
+#define elf_backend_plt_sym_val		elf32_arm_android_plt_sym_val
+
+/* Return address for Ith PLT stub in section PLT, for relocation REL
+   or (bfd_vma) -1 if it should not be included.  */
+
+static bfd_vma
+elf32_arm_android_plt_sym_val (bfd_vma i, const asection *plt,
+			       const arelent *rel ATTRIBUTE_UNUSED)
+{
+  return plt->vma + 4 * (
+    ARRAY_SIZE(elf32_arm_plt0_entry) +
+    ARRAY_SIZE(elf32_arm_plt_entry) * i);
+}
 #include "elf32-target.h"
 
 /* VxWorks Targets.  */
