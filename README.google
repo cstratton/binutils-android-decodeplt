@@ -1,0 +1,1024 @@
+Patches applied to binutils-2.21:
+
+Please include a change to this file with each patch, *and* each
+subsequent modification of the patch.  Do NOT combine patch
+checkins, keep them separate.
+
+Append new entries to the end of this file. Each entry shall include:
+ * The list of files modified by the patch,
+ * The status of the patch (whether it's been checked in upstream,
+   or is a local patch),
+ * The local 'owner' responsible for the patch, and
+ * A description of the patch (preferably including bug numbers).
+
+Please include entries for both local patches and for patches which
+have been checked in to (or back-ported from) the upstream sources.
+When checking in changes made upstream, add an entry to this file but
+DO NOT add entries to the GNU ChangeLog files.
+
+gas/as.c
+  Status: local
+  Owner: eraman
+  Ignore --save-temps flag (to enable use of the GNU assembler with a
+  compiler that passes --save-temps for MAO).
+
+gold/output.h
+  Status: backport
+  Owner: ccoutant
+  Backport upstream patch for problem where TEXTREL is set incorrectly.
+  http://sourceware.org/ml/binutils/2010-12/msg00617.html
+
+bfd/dwarf2.c
+  Status: local workaround
+  Owner: ccoutant
+  Modify read_rangelist to skip first entry in a range list if it's (0,0).
+  http://b/2304062
+
+gold/options.h
+  Status: backport
+  Owner: ppluzhnikov
+  Backport upstream patch:
+  http://sourceware.org/ml/binutils/2011-01/msg00341.html
+  to add support for --no-detect-odr-violations
+
+etc/gnu-oids.texi
+  Status: backport
+  Owner: simonb
+  Add file missing from binutils-2.21 tarball, fixes 'make html' error:
+  ./standards.texi:2262: @include `gnu-oids.texi': No such file or directory.
+  http://comments.gmane.org/gmane.comp.gnu.binutils/51175
+  http://comments.gmane.org/gmane.comp.gnu.binutils/51188
+
+gold/configure.ac
+gold/configure
+  Status: backport
+  Owner: simonb
+  Add a check that the CC being used to build binutils supports
+  gnu_indirect_function.  Fixes, when building with gcc from crosstool v14:
+  Error: unrecognized symbol type "gnu_indirect_function"
+  http://sourceware.org/ml/binutils/2011-03/msg00003.html
+
+gold/script-sections.cc
+  Status: backport
+  Owner: ccoutant
+  Fix problem with placement of .tbss with linker scripts, and problem
+  with missing TLS segment in a test case.
+  http://sourceware.org/ml/binutils/2011-01/msg00036.html
+  http://sourceware.org/ml/binutils/2011-03/msg00029.html
+
+ld/testsuite/ld-selective/selective.exp
+  Status: backport
+  Owner: simonb
+  Fix testsuite failure provoked by message format change in gcc 4.6.
+  http://sourceware.org/ml/binutils/2010-12/msg00189.html
+
+ld/testsuite/ld-plugin/plugin.exp
+  Status: local workround
+  Owner: simonb
+  XFAIL plugin tests for powerpc platforms.  These tests generate a
+  call to ld-new on powerpc that results in additional error messages
+  and warnings relative to other platforms.  These messages then cause
+  link and testsuite test failures.
+
+gas/as.c
+gas/as.h
+gas/doc/as.texinfo
+gas/read.c
+gas/testsuite/gas/all/incbin.d
+  Status: google local
+  Owner: aaw
+  Disable .incbin, unless explicitly enabled with new flag --allow-incbin.
+
+gold/script-sections.cc
+  Status: backport
+  Owner: simonb
+  Fix gold/relro_script_test failures seen in crosstool v15 nightly builds.
+  http://sourceware.org/ml/binutils/2011-03/msg00279.html
+
+bfd/doc/bfd.info
+binutils/doc/Makefile.am
+binutils/doc/Makefile.in
+binutils/doc/addr2line.1
+binutils/doc/ar.1
+binutils/doc/binutils.info
+binutils/doc/dlltool.1
+binutils/doc/elfedit.1
+binutils/doc/nlmconv.1
+binutils/doc/nm.1
+binutils/doc/objcopy.1
+binutils/doc/objdump.1
+binutils/doc/ranlib.1
+binutils/doc/readelf.1
+binutils/doc/size.1
+binutils/doc/strings.1
+binutils/doc/strip.1
+binutils/doc/windmc.1
+binutils/doc/windres.1
+etc/configure.info
+etc/standards.info
+gas/doc/Makefile.am
+gas/doc/Makefile.in
+gas/doc/as.1
+gas/doc/as.info
+gprof/Makefile.am
+gprof/Makefile.in
+gprof/gprof.1
+gprof/gprof.info
+ld/Makefile.am
+ld/Makefile.in
+ld/ld.1
+ld/ld.info
+  Status: local
+  Owner: simonb
+  Remove all pre-formatted manual and info pages so that they will
+  consistently be formatted during the build process.  When formatting them,
+  pass --date=" " to pod2man to avoid including build dates.
+
+gold/fileread.cc
+  Status: In upstream.
+  Owner: ppluzhnikov
+  For http://b/4080187, apply upstream patch to get rid of useless munmap
+  calls. http://sourceware.org/ml/binutils/2011-03/msg00199.html 
+
+gold/archive.cc
+gold/archive.h
+gold/dynobj.cc
+gold/dynobj.h
+gold/incremental-dump.cc
+gold/incremental.cc
+gold/incremental.h
+gold/object.cc
+gold/object.h
+gold/options.cc
+gold/options.h
+gold/plugin.cc
+gold/plugin.h
+gold/readsyms.cc
+gold/script.cc
+gold/script.h
+  Status: Backport
+  Owner: ccoutant
+  Backport incremental patches:
+  (5/18) support --start-lib/--end-lib
+  (6/18) track files added by scripts
+  (7/18) restructure class Incremental_binary
+  http://sourceware.org/ml/binutils/2011-03/msg00490.html
+  http://sourceware.org/ml/binutils/2011-03/msg00491.html
+  http://sourceware.org/ml/binutils/2011-03/msg00492.html
+
+bfd/dwarf2.c
+  Status: Backport
+  Owner: ccoutant
+  Apply upstream patch to fix problem where addr2line is not printing
+  the name of the outermost function of an inline call stack (b/3485121).
+  http://sourceware.org/ml/binutils/2011-04/msg00073.html
+
+gold/layout.cc
+  Status: Backport
+  Owner: ccoutant
+  Apply upstream patch to fix problem where writable .eh_frame section
+  with -z relro results in internal error (b/4257587).
+  http://sourceware.org/ml/binutils/2011-01/msg00142.html
+
+gold/arm.cc
+gold/layout.cc
+gold/target.h
+  Status: backport
+  Owner: dougkwan
+  g4 integrate CL-46350-p2
+  Backport upstream patch for file descriptor leakage in ARM back-end.
+  (b/3125810).
+  http://sourceware.org/ml/binutils-cvs/2010-11/msg00060.html
+
+gold/archive.cc
+gold/archive.h
+gold/dynobj.cc
+gold/dynobj.h
+gold/fileread.cc
+gold/fileread.h
+gold/gold.cc
+gold/incremental-dump.cc
+gold/incremental.cc
+gold/incremental.h
+gold/layout.cc
+gold/layout.h
+gold/main.cc
+gold/object.cc
+gold/object.h
+gold/options.cc
+gold/options.h
+gold/output.cc
+gold/output.h
+gold/plugin.cc
+gold/plugin.h
+gold/readsyms.cc
+gold/readsyms.h
+gold/reloc.cc
+gold/script.cc
+gold/script.h
+gold/symtab.cc
+gold/symtab.h
+  Status: Backport
+  Owner: ccoutant
+  Backport incremental patch 8/18: Initial support for incremental update.
+  http://sourceware.org/ml/binutils-cvs/2011-04/msg00067.html
+  http://sourceware.org/ml/binutils-cvs/2011-04/msg00068.html
+
+gold/arm.cc
+gold/i386.cc
+gold/powerpc.cc
+gold/sparc.cc
+gold/symtab.h
+gold/x86_64.cc
+  Status: backport
+  Owner: dougkwan
+  g4 integrate 46904-p2
+  Backport upstream fix for gcc regression g++.dg/warn/weak1.C.
+  http://sourceware.org/ml/binutils-cvs/2010-11/msg00072.html
+  http://sourceware.org/ml/binutils-cvs/2010-12/msg00060.html
+  Note that IFUNC and R_X86_64_GNU_VT* related code was removed in
+  46904-p2.  We added that back from the original upstream patches.
+
+gold/layout.cc
+gold/layout.h
+gold/reloc.cc
+  Status: backport
+  Owner: ccoutant
+  Backport upstream fix for regression caused by incremental patch 8,
+  where -s option causes internal error.
+  http://sourceware.org/ml/binutils-cvs/2011-04/msg00085.html
+
+gas/config/tc-i386.c
+gas/config/tc-i386.h
+  Status: local
+  Owner: martint
+  Move types/enums/structs/macros used by MAO into header-file.
+
+gold/incremental.cc
+gold/incremental.h
+gold/layout.cc
+gold/target-reloc.h
+gold/target.h
+gold/x86_64.cc
+  Status: backport
+  Owner: ccoutant
+  Backport incremental patch 9: Apply incremental relocations.
+  http://sourceware.org/ml/binutils-cvs/2011-04/msg00142.html
+
+gold/incremental-dump.cc
+gold/incremental.cc
+gold/incremental.h
+gold/object.h
+  Status: backport
+  Owner: ccoutant
+  Backport incremental patch 10: Add incremental linking support for
+  local symbols.
+  http://sourceware.org/ml/binutils-cvs/2011-04/msg00154.html
+
+gold/copy-relocs.cc
+gold/gold.cc
+gold/icf.cc
+gold/mapfile.cc
+gold/plugin.cc
+  Status: backport
+  Owner: ccoutant
+  Port CL 46195 from binutils-20100303.
+  Backport upstream patch for file descriptor leakage (b/3125810).
+  http://sourceware.org/ml/binutils/2010-11/msg00138.html
+
+gold/layout.cc
+gold/layout.h
+gold/object.cc
+gold/options.h
+  Status: backport
+  Owner: ccoutant
+  Port CL 45743 from binutils-20100303.
+  Backport upstream patch to add --warn-execstack option.
+  http://sourceware.org/ml/binutils/2010-12/msg00362.html
+
+gold/dwarf_reader.cc
+gold/dwarf_reader.h
+  Status: backport
+  Owner: ccoutant
+  Port CL 46030 from binutils-20100303.
+  Backport upstream patch to fix problem where consecutive rows in the
+  dwarf line number table describe the same address, leading to false
+  positive ODR warnings.
+  http://sourceware.org/ml/binutils/2010-12/msg00567.html
+
+gold/dwarf_reader.cc
+gold/dwarf_reader.h
+gold/reloc.cc
+gold/reloc.h
+  Status: backport
+  Owner: jyasskin
+  Port CL 45562 from binutils-20100303.
+  Backport upstream fix to teach gold locations of functions not at
+  the start of their sections.
+  http://sourceware.org/ml/binutils/2010-12/msg00022.html
+
+gas/config/tc-arm.c
+  Status: local workaround
+  Owner: kbaclawski
+  Fixed an uninitialized variable warning in line 6569 (under gcc 4.4.3), that
+  prevented arm-linux-gnueabi targeted cross compiler to build cleanly.
+
+gold/dwarf_reader.cc
+gold/dwarf_reader.h
+gold/object.cc
+gold/symtab.cc
+gold/symtab.h
+gold/testsuite/Makefile.am
+gold/testsuite/Makefile.in
+gold/testsuite/debug_msg.cc
+gold/testsuite/debug_msg.sh
+gold/testsuite/odr_header1.h
+gold/testsuite/odr_header2.h
+gold/testsuite/odr_violation1.cc
+gold/testsuite/odr_violation2.cc
+  Status: backport
+  Owner: jyasskin
+  Port CLs 47766, 47864, and 49843 from binutils-20100303.
+  Make the ODR checker compare all the lines associated with the first
+  instruction of a function, rather than just one of them.
+  http://sourceware.org/ml/binutils/2011-02/msg00048.html
+  http://sourceware.org/ml/binutils/2011-03/msg00195.html
+  http://sourceware.org/ml/binutils/2011-03/msg00219.html
+
+ltmain.sh
+  Status: libtool 74c8993c178a1386ea5e2363a01d919738402f30 (not in binutils yet)
+  Owner: cgd
+  Sort output of 'find' to ensure deterministic builds.
+
+gold/icf.cc
+  Status: backport
+  Owner: dougkwan
+  g4 integrate CL 46828-p2 from binutils-20100303.
+  Backport upstream fix for ICF crash. (b/3384375)
+  http://sources.redhat.com/ml/binutils-cvs/2011-01/msg00140.html
+
+gold/object.cc
+  Status: Backport
+  Owner: ccoutant
+  Fix problem with -s (strip symbols) option causing internal error
+  in gold (b/4395929).
+  http://sourceware.org/ml/binutils/2011-05/msg00128.html
+
+gold/dwarf_reader.cc
+  Status: Backport
+  Owner: ccoutant
+  Backport upstream patch to fix ODR detection with compressed debug info.
+  http://sourceware.org/ml/binutils-cvs/2010-11/msg00105.html
+
+gold/arm.cc
+gold/copy-relocs.cc
+gold/copy-relocs.h
+gold/dynobj.h
+gold/ehframe.cc
+gold/ehframe.h
+gold/gc.h
+gold/gold.cc
+gold/i386.cc
+gold/incremental-dump.cc
+gold/incremental.cc
+gold/incremental.h
+gold/layout.cc
+gold/layout.h
+gold/mapfile.cc
+gold/mapfile.h
+gold/object.cc
+gold/object.h
+gold/options.h
+gold/output.cc
+gold/output.h
+gold/powerpc.cc
+gold/reloc.cc
+gold/reloc.h
+gold/sparc.cc
+gold/symtab.cc
+gold/symtab.h
+gold/target-reloc.h
+gold/target.cc
+gold/target.h
+gold/testsuite/Makefile.am
+gold/testsuite/Makefile.in
+gold/testsuite/binary_unittest.cc
+gold/testsuite/object_unittest.cc
+gold/testsuite/testfile.cc
+gold/testsuite/two_file_test_1_v1.cc
+gold/testsuite/two_file_test_1b_v1.cc
+gold/testsuite/two_file_test_2_v1.cc
+gold/x86_64.cc
+  Status: Backport
+  Owner: ccoutant
+  Port CL 53563 from binutils-20100303:
+  Backport incremental linking patches 11-16.
+  http://sourceware.org/ml/binutils-cvs/2011-05/msg00154.html
+  http://sourceware.org/ml/binutils-cvs/2011-05/msg00160.html
+  http://sourceware.org/ml/binutils-cvs/2011-05/msg00161.html
+  http://sourceware.org/ml/binutils-cvs/2011-05/msg00162.html
+  http://sourceware.org/ml/binutils-cvs/2011-05/msg00163.html
+  http://sourceware.org/ml/binutils-cvs/2011-05/msg00175.html
+  http://sourceware.org/ml/binutils-cvs/2011-05/msg00191.html
+
+gold/common.cc
+gold/copy-relocs.cc
+gold/copy-relocs.h
+gold/errors.cc
+gold/errors.h
+gold/gold.cc
+gold/gold.h
+gold/incremental-dump.cc
+gold/incremental.cc
+gold/incremental.h
+gold/layout.cc
+gold/main.cc
+gold/output.cc
+gold/output.h
+gold/resolve.cc
+gold/symtab.cc
+gold/symtab.h
+gold/target.h
+gold/testsuite/Makefile.am
+gold/testsuite/Makefile.in
+gold/testsuite/common_test_1_v1.c
+gold/testsuite/common_test_1_v2.c
+gold/testsuite/copy_test_v1.cc
+gold/x86_64.cc
+  Status: Backport
+  Owner: ccoutant
+  Port CL 53582 from binutils-20100303:
+  Backport incremental linking patches 17-21.
+  http://sourceware.org/ml/binutils-cvs/2011-06/msg00038.html
+  http://sourceware.org/ml/binutils-cvs/2011-06/msg00039.html
+  http://sourceware.org/ml/binutils-cvs/2011-06/msg00040.html
+  http://sourceware.org/ml/binutils-cvs/2011-06/msg00041.html
+  http://sourceware.org/ml/binutils-cvs/2011-06/msg00042.html
+
+gold/incremental.cc
+gold/incremental.h
+gold/layout.cc
+gold/options.cc
+gold/options.h
+gold/output.cc
+gold/output.h
+gold/parameters.cc
+gold/parameters.h
+gold/readsyms.cc
+gold/testsuite/Makefile.am
+gold/testsuite/Makefile.in
+gold/testsuite/two_file_test_1_v1.cc
+  Status: Backport
+  Owner: ccoutant
+  Port CL 53702 from binutils-20100303:
+  Backport incremental linking patches 22-26.
+  http://sourceware.org/ml/binutils/2011-06/msg00009.html
+  http://sourceware.org/ml/binutils/2011-06/msg00010.html
+  http://sourceware.org/ml/binutils/2011-06/msg00011.html
+  http://sourceware.org/ml/binutils/2011-06/msg00013.html
+  http://sourceware.org/ml/binutils/2011-06/msg00112.html
+
+gold/gold.cc
+gold/object.cc
+  Status: Backport
+  Owner: ccoutant
+  Backport upstream patch to fix problem with incremental linking
+  and compressed debug sections.
+  http://sourceware.org/ml/binutils-cvs/2011-06/msg00061.html
+
+binutils/nm.c
+  Status: Backport
+  Owner: ccoutant
+  Backport upstream patch to fix nm -l with compressed debug.
+  http://sourceware.org/ml/binutils-cvs/2011-07/msg00073.html
+
+gold/arm.cc
+gold/freebsd.h
+gold/i386.cc
+gold/options.cc
+gold/options.h
+gold/parameters.cc
+gold/powerpc.cc
+gold/script.cc
+gold/sparc.cc
+gold/target-select.cc
+gold/target-select.h
+gold/testsuite/testfile.cc
+gold/x86_64.cc
+  Status: Backport
+  Owner: ccoutant
+  Backport upstream patch to implement the -m option in gold.
+  Fixes "incompatible target" errors in gcc LTO tests.
+  http://sourceware.org/ml/binutils-cvs/2011-06/msg00199.html
+
+gold/workqueue-internal.h
+gold/workqueue-threads.cc
+gold/workqueue.cc
+gold/workqueue.h
+  Status: Backport
+  Owner: ccoutant
+  Backport upstream patch to fix race condition when thread
+  count decreases between link phases.
+  http://sourceware.org/ml/binutils-cvs/2011-07/msg00150.html
+
+gold/archive.cc
+gold/layout.cc
+gold/layout.h
+gold/main.cc
+gold/output.cc
+gold/output.h
+gold/plugin.cc
+gold/plugin.h
+gold/readsyms.cc
+gold/testsuite/plugin_test.c
+include/plugin-api.h
+  Status: Backport
+  Owner: tmsriram
+  Backport upstream patch to add new plugin interfaces for section
+  re-ordering.
+  http://sourceware.org/ml/binutils/2011-07/msg00137.html
+
+gold/gold.cc
+gold/object.cc
+  Status: Backport
+  Owner: ccoutant
+  Backport upstream patch to fix internal error with compressed
+  debug sections.
+  http://sourceware.org/ml/binutils-cvs/2010-11/msg00099.html
+
+gold/plugin.cc
+gold/plugin.h
+include/plugin-api.h
+  Status: Backport
+  Owner: tmsriram
+  Backport upstream patch to add get_view to plugin APIs.
+  http://sourceware.org/ml/binutils/2011-03/msg00382.html
+
+gold/layout.cc
+gold/object.cc
+gold/object.h
+gold/script-sections.cc
+gold/symtab.cc
+gold/target.cc
+gold/testsuite/Makefile.am
+gold/testsuite/Makefile.in
+gold/testsuite/justsyms_exec.c
+gold/testsuite/justsyms_lib.c
+  Status: Backport
+  Owner: ccoutant
+  Backport upstream patches to fix -r option with orphaned sections
+  and to fix -R/--just-symbols option with an executable file
+  (for building Linux kernel).
+  http://sourceware.org/ml/binutils-cvs/2011-06/msg00062.html
+  http://sourceware.org/ml/binutils-cvs/2011-08/msg00005.html
+  http://sourceware.org/ml/binutils-cvs/2011-08/msg00007.html
+
+gas/testsuite/gas/arm/mapmisc.d
+  Status: Google local
+  Owner: dougkwan
+  Enable .incbin to make test pass.
+
+gold/layout.cc
+gold/layout.h
+gold/output.cc
+gold/output.h
+gold/testsuite/Makefile.am
+gold/testsuite/Makefile.in
+  Status: Local, pending review upstream
+  Backport upstream patch to fix incremental linking support for debug
+  sections.
+  http://sourceware.org/ml/binutils/2011-08/msg00128.html
+  http://sourceware.org/ml/binutils/2011-08/msg00145.html
+
+ld/testsuite/ld-elf/new.cc
+  Status: Backport
+  Owner: simonb
+  Backport upstream patch to fix bogus include of exception_defines.h.
+  http://sourceware.org/ml/binutils/2011-02/msg00286.html
+
+gold/arm.cc
+gold/testsuite/Makefile.am
+gold/testsuite/Makefile.in
+gold/testsuite/arm_branch_in_range.sh
+gold/testsuite/arm_thm_jump11.s
+gold/testsuite/arm_thm_jump11.t
+gold/testsuite/arm_thm_jump8.s
+gold/testsuite/arm_thm_jump8.t
+  Status: Backport
+  Owner: raymes
+  Backport upstream fix for overflow checking of R_ARM_THM_JUMP{11,8}.
+  http://sourceware.org/ml/binutils/2011-06/msg00304.html
+
+gold/archive.h
+  Status: Backport
+  Owner: dougkwan
+  Backport upstream patch to fix gold build breakage.
+  http://www.cygwin.com/ml/binutils-cvs/2011-04/msg00131.html
+
+gold/arm.cc
+gold/testsuite/Makefile.am
+gold/testsuite/Makefile.in
+gold/testsuite/arm_exidx_test.s
+gold/testsuite/arm_exidx_test.sh
+  Status: In upstream.
+  Owner: dougkwan
+  Backport upstream patch to fix SHF_LINK_ORDER bug in ARM.exidx sections.
+  http://www.cygwin.com/ml/binutils-cvs/2011-04/msg00141.html
+
+gold/arm.cc
+gold/testsuite/arm_exidx_test.s
+  Status: In upstream.
+  Owner: dougkwan
+  Backport upstream patch to fix assertions due to empty text sections.
+  http://sourceware.org/ml/binutils-cvs/2011-06/msg00162.html
+
+gold/incremental.cc
+gold/testsuite/Makefile.am
+gold/testsuite/Makefile.in
+gold/testsuite/incr_comdat_test_1.cc
+gold/testsuite/incr_comdat_test_2_v1.cc
+gold/testsuite/incr_comdat_test_2_v2.cc
+gold/testsuite/incr_comdat_test_2_v3.cc
+  Status: Backport
+  Owner: ccoutant
+  Backport upstream patch to fix problem where incremental update
+  does not record kept comdat keys from unchanged files.
+  http://sourceware.org/ml/binutils/2011-09/msg00056.html
+
+gold/Makefile.in
+gold/configure
+gold/configure.ac
+gold/testsuite/Makefile.am
+gold/testsuite/Makefile.in
+  Status: Backport
+  Owner: simonb
+  Backport upstream fix for gold detection of static ifunc support.
+  http://sourceware.org/ml/binutils/2011-09/msg00069.html
+
+gold/incremental.cc
+gold/incremental.h
+gold/layout.cc
+gold/object.cc
+gold/testsuite/Makefile.am
+gold/testsuite/Makefile.in
+  Status: Backport
+  Owner: ccoutant
+  Backport upstream fixes for incremental linking problems with .init_array
+  and .eh_frame sections, and for spurious test suite failures due to
+  debug information in incremental tests.
+  http://sourceware.org/ml/binutils-cvs/2011-07/msg00050.html
+  http://sourceware.org/ml/binutils-cvs/2011-09/msg00062.html
+
+gold/plugin.cc
+gold/plugin.h
+  Status: Backport
+  Owner: tmsriram
+  Backport upstream fix for deferring layout only when a plugin has claimed
+  an object. 
+  http://sourceware.org/ml/binutils/2011-09/msg00116.html
+  Also, backport a small portion of this patch : 
+  http://sourceware.org/ml/binutils/2011-01/msg00337.html
+  which defines a member (any_claimed_ in Plugin_manager) that is needed
+  for this fix.
+
+gold/Makefile.am
+gold/Makefile.in
+gold/configure
+gold/configure.ac
+gold/testsuite/Makefile.in
+  Status: Backport
+  Owner: simonb
+  Backport upstream fix that adds --with-gold-ldflags and --with-gold-ldadd.
+  http://sourceware.org/ml/binutils/2011-09/msg00123.html
+
+gold/gold.cc
+gold/options.cc
+  Status: Backport
+  Owner: ccoutant
+  Backport upstream patch to fix problem with incremental linking and
+  --gc-sections.
+  http://sourceware.org/ml/binutils-cvs/2011-09/msg00099.html
+
+gold/incremental.cc
+gold/symtab.cc
+  Status: Backport
+  Owner: ccoutant
+  Backport upstream patch to fix problems with incremental linking and
+  shared libraries when all references to a PLT come from changed files.
+  Also fixes a problem when a changed object file references a versioned
+  symbol defined in an unchanged shared library.
+  http://sourceware.org/ml/binutils-cvs/2011-09/msg00124.html
+
+gold/gold.cc
+gold/plugin.cc
+gold/layout.cc
+gold/layout.h
+gold/plugin.cc
+gold/plugin.h
+gold/testsuite/Makefile.am
+gold/testsuite/Makefile.in
+gold/testsuite/plugin_final_layout.sh
+gold/testsuite/plugin_final_layout.cc
+gold/testsuite/plugin_section_order.c
+  Status: Backport
+  Owner: tmsriram
+  Backport upstream patch to fix a bug in plugin section order and delayed
+  layout.
+  http://www.cygwin.com/ml/binutils/2011-09/msg00265.html
+
+binutils/doc/binutils.texi
+binutils/dwarf.c
+binutils/dwarf.h
+binutils/objdump.c
+binutils/readelf.c
+elfcpp/dwarf.h
+gold/Makefile.am
+gold/Makefile.in
+gold/dwarf_reader.cc
+gold/dwarf_reader.h
+gold/gdb-index.cc
+gold/gdb-index.h
+gold/int_encoding.cc
+gold/layout.cc
+gold/layout.h
+gold/object.cc
+gold/options.h
+gold/reduced_debug_output.cc
+gold/testsuite/Makefile.am
+gold/testsuite/Makefile.in
+gold/testsuite/gdb_index_test.cc
+gold/testsuite/gdb_index_test_1.sh
+gold/testsuite/gdb_index_test_2.sh
+  Status: Local
+  Owner: ccoutant
+  Port --gdb_index support from v14.
+  Includes upstream patches for .gdb_index dumping in readelf/objdump.
+  http://sourceware.org/ml/binutils-cvs/2010-12/msg00019.html
+  http://sourceware.org/ml/binutils-cvs/2011-01/msg00145.html
+  Also includes some performance improvements not in v14.
+
+gold/dwarf_reader.cc
+  Status: Local
+  Owner: ccoutant
+  Fix set-but-unused variable warning.
+
+gold/output.cc
+  Status: Backport
+  Owner: dougkwan
+  Backport upstream patch to fix build problem on 32-bit host.
+  http://www.cygwin.com/ml/binutils-cvs/2011-08/msg00121.html
+
+include/demangle.h
+libiberty/cp-demangle.c
+libiberty/testsuite/demangle-expected
+  Status: Backport
+  Owner: ppluzhnikov
+  For http://b/2713120, backport Cary's upstream fix to demangle cloned
+  functions.
+  http://gcc.gnu.org/ml/gcc-patches/2011-02/msg01545.html
+  http://gcc.gnu.org/viewcvs?view=revision&revision=179132
+  Note: the patch did not apply cleanly and required minor adjustments.
+
+gold/options.cc
+  Status: Backport
+  Owner: ccoutant
+  Backport dnovillo's patch to fix bug in option parsing.
+  http://sourceware.org/ml/binutils-cvs/2011-10/msg00006.html
+
+ld/emultempl/armelf.em
+  Status: Local
+  Owner: dougkwan
+  g4 integrate 41851 to implement dummy --icf= option in GNU ld.
+
+gold/i386.cc
+gold/incremental.cc
+gold/layout.cc
+gold/output.cc
+gold/output.h
+gold/powerpc.cc
+gold/sparc.cc
+gold/target.h
+gold/testsuite/Makefile.am
+gold/testsuite/Makefile.in
+gold/testsuite/ifuncvar1.c
+gold/testsuite/ifuncvar2.c
+gold/testsuite/ifuncvar3.c
+gold/x86_64.cc
+  Status: Backport
+  Owner: ccoutant
+  Backport upstream patches:
+  (1) PR gold/12372 (Put IRELATIVE relocs after JUMP_SLOT relocs). 
+  http://sourceware.org/ml/binutils-cvs/2011-07/msg00053.html
+  (2) PR gold/13249 (gold creates incorrect RELATIVE dynamic relocation for
+  local IFUNC GOT entries)
+  http://sourceware.org/ml/binutils-cvs/2011-10/msg00040.html
+
+gold/incremental.cc
+gold/incremental.h
+gold/plugin.cc
+  Status: Backport
+  Owner: ccoutant
+  Backport upstream patch to add support for --print-symbol-counts
+  for incremental links and plugins.
+  http://sourceware.org/ml/binutils-cvs/2011-10/msg00041.html
+
+gold/output.cc
+  Status: Backport
+  Owner: ccoutant
+  Backport upstream patch to fix problem with --incremental-base when
+  base file is too large.
+  http://sourceware.org/ml/binutils-cvs/2011-10/msg00055.html
+
+gold/fileread.cc
+  Status: Backport
+  Owner: ccoutant
+  Backport upstream patch to fix problem detecting truncated or
+  corrupt files.
+  http://sourceware.org/ml/binutils-cvs/2011-10/msg00078.html
+
+gold/readsyms.cc
+  Status: Backport
+  Owner: ccoutant
+  Backport upstream patch to fix crash when member of lib group
+  can't be opened.
+  http://sourceware.org/ml/binutils-cvs/2011-10/msg00080.html
+
+gold/output.cc
+  Status: Backport
+  Owner: ccoutant
+  Backport upstream patch to fix problem detecting out-of-space
+  condition when calling posix_fallocate.
+  http://sourceware.org/ml/binutils-cvs/2011-10/msg00086.html
+
+bfd/elf32-arm.c
+ld/testsuite/ld-arm/arm-elf.exp
+ld/testsuite/ld-arm/cortex-a8-fix-b-plt.d
+ld/testsuite/ld-arm/cortex-a8-fix-b-plt.s
+ld/testsuite/ld-arm/cortex-a8-fix-bcc-plt.d
+ld/testsuite/ld-arm/cortex-a8-fix-bcc-plt.s
+ld/testsuite/ld-arm/cortex-a8-fix-bl-plt.d
+ld/testsuite/ld-arm/cortex-a8-fix-bl-plt.s
+ld/testsuite/ld-arm/cortex-a8-fix-blx-plt.d
+ld/testsuite/ld-arm/cortex-a8-fix-blx-plt.s
+ld/testsuite/ld-arm/cortex-a8-fix-plt.ld
+  Status: Backport
+  Owner: raymes
+  Backport upstream patch to fix problem with Cortex-A8 workaround.
+  http://sourceware.org/ml/binutils-cvs/2011-05/msg00030.html
+
+gold/options.h
+gold/symtab.cc
+  Status: Local, not yet upstream
+  Owner: ccoutant
+  Add --no-gnu-unique option to disable STB_GNU_UNIQUE binding.
+  (Adapted from CL 49473.)
+
+gprof/hist.c
+  Status: Backport
+  Owner: carrot
+  Backport upstream patch to fix the out of range of an array index in gprof.
+  http://sourceware.org/bugzilla/show_bug.cgi?id=13325.
+
+gold/i386.cc
+gold/x86_64.cc
+  Status: Backport
+  Owner: ccoutant
+  Backport upstream patch to fix internal error on TLS relocation.
+  http://sourceware.org/ml/binutils-cvs/2011-10/msg00186.html
+
+gold/expression.cc
+gold/script-sections.cc
+gold/script.cc
+gold/script.h
+gold/testsuite/script_test_2.t
+  Status: Backport
+  Owner: ccoutant
+  Backport upstream patch to fix problems with assignment to dot in
+  linker scripts.
+  http://sourceware.org/ml/binutils-cvs/2011-10/msg00188.html
+
+gold/symtab.h
+gold/symtab.cc
+  Status: Backport
+  Owner: tmsriram
+  Backport upstream patch to not gc symbols that go into dynamic symbol table.
+  http://cygwin.com/ml/binutils/2011-10/msg00306.html
+
+binutils/Makefile.am
+binutils/Makefile.in
+  Status: Backport
+  Owner: yunlian
+  Backport upstream patch to fix out of treebuilding with syslex regens.
+  http://sourceware.org/ml/binutils-cvs/2011-10/msg00158.html
+
+
+gold/script-sections.cc
+  Status: Backport
+  Owner: dougkwan
+  Backport upstream patch to fix linker crash.
+  http://www.cygwin.com/ml/binutils-cvs/2011-10/msg00095.html
+
+gold/yyscript.y
+  Status: Backport
+  Owner: saugustine
+  Backport upstream patch to fix INCLUDE syntax errors.
+  http://sourceware.org/ml/binutils/2011-11/msg00089.html
+
+gold/dirsearch.cc
+gold/dirsearch.h
+gold/script.cc.cc
+  Status: Backport
+  Owner: saugustine
+  Backport upstream patch to implement INCLUDE directive
+  http://sourceware.org/ml/binutils/2011-11/msg00165.html
+
+gas/config/tc-arm.c
+gas/testsuite/gas/arm/attr-march-armv7.d
+include/opcode/arm.h
+  Status: Upstream
+  Owner: dougkwan
+  Fix b/5803351 by merging relevant parts of:
+  http://www.cygwin.com/ml/binutils-cvs/2011-04/msg00112.html
+
+gold/arm.cc
+  Status: Upstream
+  Owner: dougkwan
+  Fix PIE crashes on ARM.
+  http://sourceware.org/ml/binutils-cvs/2012-02/msg00012.html
+
+gas/as.c
+  Status: Local for mobile release branch
+  Owner: jingyu
+  Allow .incbin by default.
+
+gold/arm.cc
+  Status: Backport
+  Owner: dougkwan
+  Backport fix from upstream for ARM regression.
+  http://sourceware.org/ml/binutils-cvs/2012-03/msg00059.html
+
+gold/arm.cc
+gold/gold.cc
+gold/target.h
+gold/testsuite/Makefile.am
+gold/testsuite/Makefile.in
+gold/testsuite/arm_exidx_test.s
+gold/testsuite/arm_exidx_test.sh
+  Status: Backport
+  Owner: dougkwan
+  Backport fix from upstream for __exidx_start & __exidx_end section
+  symbols on ARM.
+  http://sourceware.org/ml/binutils-cvs/2012-03/msg00086.html
+
+gold/arm.cc
+gold/layout.cc
+  Status: Backport
+  Owner: dougkwan
+  Backport fix from upstream for -z relro.
+  http://sourceware.org/ml/binutils-cvs/2012-03/msg00064.html
+  http://sourceware.org/ml/binutils-cvs/2012-03/msg00067.html
+
+gold/incremental.cc
+gold/incremental.h
+gold/layout.cc
+gold/object.cc
+gold/testsuite/Makefile.am
+gold/testsuite/Makefile.in
+  Status: Backport
+  Owner: dougkwan
+  g4 integrate 55621-p2 to fix gold regression on x86.
+
+gold/icf.cc
+gold/icf.h
+  Status: In upstream.
+  Fix dangling pointer bug caused by calling c_str method of temporary
+  string object.
+  http://cygwin.com/ml/binutils/2011-02/msg00030.html 
+
+bfd/elf.c
+  Status: backport
+  Owner: bccheng
+  Preserve the original p_align and p_flags if they are valid.
+  g4 integrate 60390-p2
+
+
+bfd/elf32-arm.c
+bfd/elf32-i386.c
+bfd/elf64-x86-64.c
+bfd/elf64-ppc.c
+bfd/elflink.c
+ld/testsuite/ld-elf/pr13177.d
+ld/testsuite/ld-elf/pr13177.s
+  Status: Backport
+  Owner: jingyu
+  Fix --gc-sections bug in bfd ld.
+  http://sourceware.org/bugzilla/show_bug.cgi?id=13177
+  http://sourceware.org/ml/binutils/2012-02/msg00056.html
+  http://sourceware.org/ml/binutils/2011-06/msg00154.html
+  http://sourceware.org/ml/binutils/2011-12/msg00077.html
+
+bfd/elflink.c
+  Status: Backport
+  Owner: jingyu
+  Fix elf_link_output_extsym for warning, following up --gc-sections fix.
+  http://sourceware.org/bugzilla/show_bug.cgi?id=13311
